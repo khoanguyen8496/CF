@@ -14,8 +14,6 @@
 #define EB emplace_back
 #define F first
 #define S second
-#define GCD(a, b) \
-((b) == 0)? (b) : GCD((b), (a)%(b))
 #define DB(a) \
   {cerr<< #a << " : " << a << '\n';}
 
@@ -31,28 +29,40 @@ typedef pair<double, double> DD;
 typedef vector<DD> VDD;
 typedef vector<VI> VVI;
 typedef vector<VD> VVD;
-int n;
+LL n, m;
+
 int main()
 {
-    scanf("%d", &n);
-    vector<int> a(n, 0);
-    REP(i, 2*n) {
-        scanf("%d", &a[i]);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cin >> n >> m;
+    if (n == 1) {
+        cout << 1 << endl;
+        return 0;
     }
-    set<int> s;
-    int cnt = 0;
-    int res = 0;
-    REP(i, 2*n) {
-        if (s.find(a[i]) != s.end()) {
-            s.erase(a[i]);
-            cnt--;
-        }
-        else {
-            s.insert(a[i]);
-            cnt++;
-            res = max(res, cnt);
-        }
+    if ( n <= m) {
+        cout << n << endl;
+        return 0;
     }
-    printf("%d\n", res);
+    if (n-m-1 == 0) {
+        cout << m+1 << endl;
+        return 0;
+    }
+    LL res = m;
+    LL l(1), r(n-m-1);
+    while (l + 1 < r) {
+        LL mid = (l+r) >> 1;
+        // cerr << l << ' ' << r  << endl;
+        if (mid*(mid+1)/2 - 1 >= n-m-1)
+            r = mid;
+        else
+            l = mid+1;
+    }
+    // cerr << l << ' ' << r << endl;
+    if (l*(l+1)/2 -1 >= n-m-1) {
+        res +=l;
+    }
+    else res += r;
+    cout << res << endl;
     return 0;
 }
