@@ -1,6 +1,6 @@
 
 #include <bits/stdc++.h>
-// #define DEBUG
+
 #define PB push_back
 #define MP make_pair
 #define REP(i, n) for (int (i)=0, _n(n); (i) < _n; ++i)
@@ -29,44 +29,36 @@ typedef pair<double, double> DD;
 typedef vector<DD> VDD;
 typedef vector<VI> VVI;
 typedef vector<VD> VVD;
-LL n, m;
-
+const int N = 2*1e5+1;
+int n, m;
+int BIT[N];
+int a[N];
+void updateBIT(int x, int val) 
+{
+    while (x <= n) {
+        BIT[x] += val;
+        x+= (x & -x);
+    }
+}
+int queryBIT(int x) 
+{
+    int res = 0;
+    while (x > 0) {
+        res += BIT[x];
+        x-= (x & -x);
+    }
+    return (int)res;
+}
 int main()
 {
-#ifdef DEBUG
-    freopen("in", "r", stdin);
-#endif
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cin >> n >> m;
-    if (n == 1) {
-        cout << 1 << endl;
-        return 0;
+    scanf("%d%d", &n, &m);
+    REP(i, n) {
+        scanf("%d", &a[i]);
     }
-    if ( n <= m) {
-        cout << n << endl;
-        return 0;
+    REP(i, m) {
+        int l, r;
+        scanf("%d%d", &l, &r);
+        swap(a[l], a[r]);
     }
-    if (n-m-1 == 0) {
-        cout << m+1 << endl;
-        return 0;
-    }
-    LL res = m;
-    // cerr << "RES " << res << endl;
-    LL l(1), r(n-m);
-    while (l + 1 < r) {
-        LL mid = (l+r) >> 1;
-        // cerr << l << ' ' << r  << endl;
-        if ((double)mid >= (n-m)*2.0/(mid+1.0))
-            r = mid;
-        else
-            l = mid+1;
-    }
-    // cerr << l << ' ' << r << endl;
-    if ((double)l >= (n-m)*2.0/(l+1.0)) {
-        res +=l;
-    }
-    else res += r;
-    cout << res << endl;
     return 0;
 }
